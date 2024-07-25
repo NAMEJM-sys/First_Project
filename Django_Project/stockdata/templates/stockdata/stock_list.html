@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Data</title>
+</head>
+<body>
+<h1>Stock Data</h1>
+<table>
+    <tr>
+        <th>Stock Code</th>
+        <th>Stock Name</th>
+        <th>Current Price</th>
+        <th>Trading Volume</th>
+        <th>Date</th>
+    </tr>
+    {% for stock in stocks %}
+    <tr>
+        <td>{{ stock.stock_code }}</td>
+        <td>{{ stock.stock_name }}</td>
+        <td>{{ stock.current_price }}</td>
+        <td>{{ stock.trading_volume }}</td>
+        <td>{{ stock.date }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>
