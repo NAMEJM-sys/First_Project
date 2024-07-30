@@ -1,27 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>Stock Data</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock List</title>
+    <style>
+        .scrollable-table {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        table {
+            width: 25%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
-<h1>Stock Data</h1>
-<table>
-    <tr>
-        <th>Stock Code</th>
-        <th>Stock Name</th>
-        <th>Current Price</th>
-        <th>Trading Volume</th>
-        <th>Date</th>
-    </tr>
-    {% for stock in stocks %}
-    <tr>
-        <td>{{ stock.stock_code }}</td>
-        <td>{{ stock.stock_name }}</td>
-        <td>{{ stock.current_price }}</td>
-        <td>{{ stock.trading_volume }}</td>
-        <td>{{ stock.date }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<h1>주식 목록</h1>
+<form method="get" action="">
+    <select name="stock_name" onchange="this.form.submit()">
+        {% for stock in stocks %}
+        <option value="{{ stock.stock_name }}" {% if stock.stock_name == selected_stock %}selected{% endif %}>
+            {{ stock.stock_name }}
+        </option>
+        {% endfor %}
+    </select>
+</form>
+<div class="scrollable-table">
+    <table>
+        <thead>
+        <tr>
+            <th>날짜</th>
+            <th>종가</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if stock_list %}
+        {% for stock in stock_list %}
+        <tr>
+            <td>{{ stock.date|date:"Y.m.d" }}</td>
+            <td>{{ stock.close_price }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="2">데이터가 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

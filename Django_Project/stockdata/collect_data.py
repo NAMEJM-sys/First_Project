@@ -1,19 +1,28 @@
-from .models import StockData
+import sys
 from .kiwoom import KiwoomAPI
+from datetime import datetime, timedelta
+from .models import StockData
+import django
+django.setup()
 
-
-def collect_data():
+def collect_stock_data():
     kiwoom = KiwoomAPI()
-    stock_codes = ["005930", "000660", "066570", "105560"]  # 삼성전자, SK하이닉스
-    stock_data_list = kiwoom.collect_data(stock_codes)
+    stock_codes = ["005930", "000660", "066570", "105560"]  # 예시 주식 코드
+    stock_list = kiwoom.collect_data(stock_codes)
 
-    for data in stock_data_list:
-        StockData.objects.update_or_create(
-            stock_code=data["종목코드"],
-            defaults={
-                "stock_name": data["종목명"],
-                "current_price": data["현재가"],
-                "trading_volume": data["거래량"],
-                "date": "2024-07-25"  # 실제로는 현재 날짜를 사용
-            }
-        )
+    # 데이터베이스에 저장
+    for code, data in stock_list.items():
+        for date, price in data:
+            stock, created = StockData.objects.update_or_create(
+                stock_code=code,
+                date=datetime.strptime(date, '%Y%m%d').date(),
+                defaults={'close_price': price}
+            )
+            if created:
+                print(f"Created new record for {stock}")
+            else:
+                print(f"Updated record for {stock}")
+    return stock_list
+
+if __name__ == "__main__":
+    collect_stock_data()
