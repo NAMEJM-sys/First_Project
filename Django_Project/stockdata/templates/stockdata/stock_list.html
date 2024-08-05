@@ -10,7 +10,7 @@
             overflow-y: auto;
         }
         table {
-            width: 25%;
+            width: 50%;
             border-collapse: collapse;
         }
         th, td {
@@ -43,8 +43,8 @@
         {% if stock_list %}
         {% for stock in stock_list %}
         <tr>
-            <td>{{ stock.date|date:"Y.m.d" }}</td>
-            <td>{{ stock.close_price }}</td>
+            <td>{{ stock.0|date:"Y.m.d" }}</td>
+            <td>{{ stock.1 }}</td>
         </tr>
         {% endfor %}
         {% else %}

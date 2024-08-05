@@ -3,14 +3,15 @@ import pythoncom
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QEventLoop
 from PyQt5.QAxContainer import QAxWidget
-from datetime import datetime, timedelta
+from datetime import datetime
 
 class KiwoomAPI:
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.ocx = QAxWidget("KHOPENAPI.KHOpenAPICtrl.1")
-        self.ocx.OnEventConnect.connect(self._event_connect)
-        self.ocx.OnReceiveTrData.connect(self._receive_tr_data)
+        self.ocx.dynamicCall("CommConnect()")
+        self.ocx.OnEventConnect.connect(self._event_connect)  # 시그널 연결
+        self.ocx.OnReceiveTrData.connect(self._receive_tr_data)  # 시그널 연결
         self.login_event_loop = QEventLoop()
         self.data_event_loop = QEventLoop()
         self.data = []
@@ -56,7 +57,6 @@ class KiwoomAPI:
                     close_price = self.ocx.dynamicCall("GetCommData(QString, QString, int, QString)", trcode, rqname, i, "종가").strip()
                     date = self.ocx.dynamicCall("GetCommData(QString, QString, int, QString)", trcode, rqname, i, "일자").strip()
                     self.data.append((date, abs(int(close_price))))
-
 
                 if prev_next == "2":  # 연속 조회 처리
                     last_date = self.ocx.dynamicCall("GetCommData(QString, QString, int, QString)", trcode, rqname, data_count - 1, "일자").strip()

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+<div style="width: 300px; padding: 40px; background: white; box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); border-radius: 8px;">
+    <form action="{% url 'login' %}" method="post" style="display: flex; flex-direction: column;">
+        {% csrf_token %}
+        <input type="text" placeholder="id" name="id" required style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <input type="password" placeholder="Password" name="password" required style="margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+
+        <button type="submit" style="padding: 5px;
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;">Login</button>
+
+        <a href="{% url 'signup' %}" style="padding: 5px;
+            text-align: center;
+            display: block;
+            background-color: #007aff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;">Sign Up</a>
+
+    </form>
+</div>
+</body>
+</html>

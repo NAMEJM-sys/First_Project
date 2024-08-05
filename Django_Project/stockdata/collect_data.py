@@ -5,6 +5,8 @@ from .models import StockData
 import django
 django.setup()
 
+
+
 def collect_stock_data():
     kiwoom = KiwoomAPI()
     stock_codes = ["005930", "000660", "066570", "105560"]  # 예시 주식 코드
